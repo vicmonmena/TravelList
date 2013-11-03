@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Travel Info</string>
+    <string name="new_travel">Nuevo viaje</string>
+    <string name="city_hint">Ciudad</string>
+    <string name="country_hint">País</string>
+    <string name="year_hint">Año</string>
+    <string name="note_hint">Anotaciones</string>
+    <string name="lbl_new_visit">Nueva visita</string>
+    <string name="save_label">Guardar</string>
+    <string name="country_validation_msg">Please! Introduce país</string>
+    <string name="city_validation_msg">Please! Introduce ciudad</string>
+    <string name="year_validation_msg">Please! Introduce año</string>
+</resources>

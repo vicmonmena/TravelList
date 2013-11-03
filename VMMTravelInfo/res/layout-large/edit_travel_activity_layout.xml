@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".TravelActivity" >
+
+    <EditText
+        android:id="@+id/countryField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/country_hint"
+        android:singleLine="true"
+        android:layout_weight="1"/>
+
+    <EditText
+        android:id="@+id/cityField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/city_hint" 
+        android:singleLine="true"
+        android:layout_weight="1"/>
+
+    <EditText
+        android:id="@+id/yearField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/year_hint"
+        android:inputType="number"
+        android:singleLine="true"
+        android:layout_weight="1"/>
+
+    <EditText
+        android:id="@+id/noteField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/note_hint" 
+        android:layout_weight="6"/>
+    
+    <Button 
+        android:id="@+id/save_travel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_label"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickView"
+        android:layout_weight="1"
+        android:background="#F00"
+        android:textColor="#FFF"/>
+
+</LinearLayout>
