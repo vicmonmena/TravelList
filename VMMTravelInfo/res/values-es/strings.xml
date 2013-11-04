@@ -12,4 +12,6 @@
     <string name="country_validation_msg">Please! Introduce país</string>
     <string name="city_validation_msg">Please! Introduce ciudad</string>
     <string name="year_validation_msg">Please! Introduce año</string>
+    
+    <string name="menu_new_travel">Nuevo viaje</string>
 </resources>

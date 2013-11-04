@@ -16,4 +16,9 @@
     <string name="city_validation_msg">Please! Input city</string>
     <string name="year_validation_msg">Please! Input year</string>
     
+    <string name="title_activity_travel_list">TravelListActivity</string>
+    <string name="title_activity_travel">TravelActivity</string>
+    <string name="title_activity_edit_travel">EditTravelActivity</string>
+    
+    <string name="menu_new_travel">New travel</string>
 </resources>
