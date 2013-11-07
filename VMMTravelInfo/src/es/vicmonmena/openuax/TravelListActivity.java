@@ -8,16 +8,18 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * VERSION 1:
@@ -34,9 +36,19 @@ import android.widget.Toast;
  * 
  * 
  */
-public class TravelListActivity extends ListActivity {
+public class TravelListActivity extends ListActivity{
+	
+	static int REQUEST_CODE_TRAVEL_CREATED = 10;
+	static int REQUEST_CODE_TRAVEL_UPDATED = 20;
+	
+	/**
+	 * Posición del item en el list view que va a ser actualizado.
+	 * ¡¡ NO ME GUSTA NADA !! Investigar alternativa.
+	 */
+	int position = -1;
 	
 	private TravelAdapter adapter;
+//	ListView lv;
 	
 	private class TravelAdapter extends ArrayAdapter<TravelInfo>{
 		
@@ -44,6 +56,14 @@ public class TravelListActivity extends ListActivity {
 		private ArrayList<TravelInfo> travels;
 		private static final int RESOURCE = android.R.layout.simple_list_item_2;
 
+		public ArrayList<TravelInfo> getTravels() {
+			return travels;
+		}
+		
+		public void setTravels(ArrayList<TravelInfo> travels) {
+			this.travels = travels;
+		}
+		
 		public TravelAdapter(Context context, ArrayList<TravelInfo> travels) {
 			super(context, RESOURCE, travels);
 			
@@ -81,6 +101,15 @@ public class TravelListActivity extends ListActivity {
 			return view;
 		}
 		
+		@Override
+		public int getCount() {
+			return travels.size();
+		}
+		
+		public void update(int position, TravelInfo travel) {
+			travels.set(position, travel);
+			notifyDataSetChanged();
+		}
 	}
 	
 	static class ViewHolder {
@@ -99,6 +128,7 @@ public class TravelListActivity extends ListActivity {
         adapter = new TravelAdapter(this, values);
         
         setListAdapter(adapter);
+        registerForContextMenu(getListView());
     }
     
     //Generamos datos a mostrar
@@ -131,16 +161,13 @@ public class TravelListActivity extends ListActivity {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		
 		switch (item.getItemId()) {
-		case R.id.menu_new_travel:
-			//Creamos el Intent para lanzar la Activity EditTravelActivity
-			Intent intent = new Intent(this, EditTravelActivity.class);		
-			startActivity(intent);
-			break;
-
-		default:
-			Toast.makeText(this, getString(R.string.msg_invalid_option), Toast.LENGTH_LONG).show();
-			break;
-		}
+			case R.id.menu_new_travel:
+				//Creamos el Intent para lanzar la Activity EditTravelActivity
+				Intent intent = new Intent(TravelListActivity.this, EditTravelActivity.class);		
+				startActivityForResult(intent, REQUEST_CODE_TRAVEL_CREATED);
+				break;
+			
+			}
 		
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -155,12 +182,115 @@ public class TravelListActivity extends ListActivity {
 		Intent intent = new Intent(this, TravelActivity.class);
 		
 		//Anadimos como extras los datos que consideremos necesarios para la Activity a lanzar
+		intent.putExtra(TravelInfo.EXTRA_COUNTRY, info.getCountry());
 		intent.putExtra(TravelInfo.EXTRA_CITY, info.getCity());
-		//..
+		intent.putExtra(TravelInfo.EXTRA_YEAR, info.getYear());
+		intent.putExtra(TravelInfo.EXTRA_NOTE, info.getNote());
+		
+		/* Nota de vicmonmena:
+		 * ------------------
+		 *  La alternativa a pasar cada campo de TravelInfo como un EXTRA seía:
+		 *  - Utilizar parámetro Bundle en putExtra(...)
+		 *  - Extender de Parcelable la clase TravelInfo u otra con los 
+		 *  	parámetros que queramos pasar. 
+		 */
 		
 		//Lanzamos la Activity con el Intent creado
 		startActivity(intent);
 		
 		super.onListItemClick(l, v, position, id);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (resultCode == RESULT_OK) {
+			if (requestCode == REQUEST_CODE_TRAVEL_CREATED) {
+				
+				/*
+				 * Nota de vicmonmena:
+				 * -----------------------
+				 * Distingo entre creación y modificación para mostrar la 
+				 * alternativa, usando PARCEL.
+				 */ 
+				
+		    	if (data != null) {
+	    			TravelInfo travel = new TravelInfo();
+	    			
+	    			if (data.hasExtra(TravelInfo.EXTRA_COUNTRY)) {
+	    				travel.setCountry(data.getStringExtra(TravelInfo.EXTRA_COUNTRY));
+	    			}
+	    			
+	    			if (data.hasExtra(TravelInfo.EXTRA_CITY)) {
+	    				travel.setCity(data.getStringExtra(TravelInfo.EXTRA_CITY));
+	    			}
+	    			
+	    			if (data.hasExtra(TravelInfo.EXTRA_YEAR)) {
+	    				travel.setYear(Integer.parseInt(data.getStringExtra(TravelInfo.EXTRA_YEAR)));
+	    			}
+	    			
+	    			if (data.hasExtra(TravelInfo.EXTRA_NOTE)) {
+	    				travel.setNote(data.getStringExtra(TravelInfo.EXTRA_NOTE));
+	    			}
+	    			
+	    			adapter.add(travel);
+		    	}
+			} else if (requestCode == REQUEST_CODE_TRAVEL_UPDATED) {
+				if (data != null && data.hasExtra(TravelInfo.EXTRA_TRAVEL)) {
+					TravelInfo travel = data.getParcelableExtra(TravelInfo.EXTRA_TRAVEL);
+					adapter.update(position, travel);
+				}
+	    		
+			}
+		}
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.setHeaderTitle(getString(R.string.ctx_menu_title));  
+		getMenuInflater().inflate(R.menu.activity_travellist, menu);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		super.onContextItemSelected(item);
+		
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		
+		switch (item.getItemId()) {
+			case R.id.ctx_menu_option_edit:
+				//Creamos el Intent para lanzar la Activity EditTravelActivity
+				Intent intent = new Intent(TravelListActivity.this, EditTravelActivity.class);
+				position = info.position;
+				startActivityForResult(intent, REQUEST_CODE_TRAVEL_UPDATED);
+				break;
+			default:
+				adapter.remove(adapter.getItem(info.position));
+				break;
+		}
+		return true;
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// Mantenemos el estado del listado actual 
+		outState.putParcelableArrayList("currentList", adapter.getTravels());
+		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle state) {
+		if (state != null) {
+			if (state.getParcelableArrayList("currentList") != null) {
+				ArrayList<TravelInfo> travels = state.getParcelableArrayList("currentList");
+				adapter.setTravels(travels);
+			}
+		}
+		super.onRestoreInstanceState(state);
 	}
 }

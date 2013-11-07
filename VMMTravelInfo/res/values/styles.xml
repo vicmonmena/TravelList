@@ -17,4 +17,14 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="fieldStyle" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:padding">3dp</item>
+    </style>
+    <style name="firstFieldStyle" parent="@style/fieldStyle">
+        <item name="android:background">#F2F2F2</item>
+    </style>
+    <style name="secondFieldStyle" parent="@style/fieldStyle">
+        <item name="android:background">#81DAF5</item>
+    </style>
 </resources>

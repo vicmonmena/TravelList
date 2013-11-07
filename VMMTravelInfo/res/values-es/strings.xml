@@ -13,5 +13,14 @@
     <string name="city_validation_msg">Please! Introduce ciudad</string>
     <string name="year_validation_msg">Please! Introduce año</string>
     
+    <string name="title_activity_travel_list">Tus Viajes</string>
+    <string name="title_activity_travel">Info del Viaje</string>
+    <string name="title_activity_edit_travel">Rellena la Info</string>
+    
     <string name="menu_new_travel">Nuevo viaje</string>
+    <string name="menu_share_travel">Compartir</string>
+    
+    <string name="ctx_menu_title">¿Qué quieres?</string>
+    <string name="ctx_menu_option_edit">Modificarlo</string>
+    <string name="ctx_menu_option_delete">Borrarlo</string>
 </resources>

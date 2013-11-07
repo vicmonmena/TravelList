@@ -1,9 +1,12 @@
 package es.vicmonmena.openuax;
 
+import es.vicmonmena.openuax.model.TravelInfo;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -39,14 +42,31 @@ public class EditTravelActivity extends Activity {
 			} else if (TextUtils.isEmpty(((EditText) findViewById(R.id.yearField)).getText())) {
 				Toast.makeText(this, getString(R.string.year_validation_msg), Toast.LENGTH_SHORT).show();
 			} else {
-				String text =
-					getString(R.string.lbl_new_visit) + ": "
-					+ ((EditText) findViewById(R.id.cityField)).getText() + " (" 
-					+ ((EditText) findViewById(R.id.countryField)).getText() + "), " 
-					+ getString(R.string.year_hint) + " " 
-					+ ((EditText) findViewById(R.id.yearField)).getText();
-	    	
-				Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+				
+				Intent intent = new Intent();
+				
+				//Bundle b = new Bundle();
+				//b.putString(TravelInfo.EXTRA_COUNTRY, ((EditText) findViewById(R.id.countryField)).getText().toString());
+				//intent.putExtras(b);
+				
+				// Se utilizaría esta forma o PARCELABLE, ¡NO AMBAS!
+				intent.putExtra(TravelInfo.EXTRA_COUNTRY, ((EditText) findViewById(R.id.countryField)).getText().toString());
+				intent.putExtra(TravelInfo.EXTRA_CITY, ((EditText) findViewById(R.id.cityField)).getText().toString());
+				intent.putExtra(TravelInfo.EXTRA_YEAR, ((EditText) findViewById(R.id.yearField)).getText().toString());
+				intent.putExtra(TravelInfo.EXTRA_NOTE, ((EditText) findViewById(R.id.noteField)).getText().toString());
+				
+				// Alternativa: PARCELABLE (Para modificaciones)
+				TravelInfo travel = new TravelInfo(
+						((EditText) findViewById(R.id.countryField)).getText().toString(), 
+						((EditText) findViewById(R.id.cityField)).getText().toString(),
+						Integer.parseInt(((EditText) findViewById(R.id.yearField)).getText().toString()),
+						((EditText) findViewById(R.id.noteField)).getText().toString());
+				
+				intent.putExtra(TravelInfo.EXTRA_TRAVEL, travel);
+				// ----------------------------------------------
+				
+				setResult(RESULT_OK, intent);
+				finish();
 			}
 		}
 	}
@@ -55,19 +75,19 @@ public class EditTravelActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		Log.i(TAG, "Saving activity data...");
 		if (!TextUtils.isEmpty(((EditText) findViewById(R.id.countryField)).getText())) {
-			outState.putString("country", ((EditText) findViewById(R.id.countryField)).getText() .toString());
+			outState.putString("country", ((EditText) findViewById(R.id.countryField)).getText().toString());
 		}
 		
 		if (!TextUtils.isEmpty(((EditText) findViewById(R.id.cityField)).getText())) {
-			outState.putString("city", ((EditText) findViewById(R.id.cityField)).getText() .toString());
+			outState.putString("city", ((EditText) findViewById(R.id.cityField)).getText().toString());
 		}
 		
 		if (!TextUtils.isEmpty(((EditText) findViewById(R.id.yearField)).getText())) {
-			outState.putString("year", ((EditText) findViewById(R.id.yearField)).getText() .toString());
+			outState.putString("year", ((EditText) findViewById(R.id.yearField)).getText().toString());
 		}
 		
 		if (!TextUtils.isEmpty(((EditText) findViewById(R.id.noteField)).getText())) {
-			outState.putString("note", ((EditText) findViewById(R.id.noteField)).getText() .toString());
+			outState.putString("note", ((EditText) findViewById(R.id.noteField)).getText().toString());
 		}
 		
 		super.onSaveInstanceState(outState);
@@ -94,5 +114,16 @@ public class EditTravelActivity extends Activity {
 			}
 		}
 		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			setResult(RESULT_CANCELED, null);
+			finish();
+		}
+		
+		return super.onKeyDown(keyCode, event);
 	}
 }
