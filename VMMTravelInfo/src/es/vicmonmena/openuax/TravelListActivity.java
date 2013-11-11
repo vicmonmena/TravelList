@@ -2,6 +2,7 @@ package es.vicmonmena.openuax;
 
 import java.util.ArrayList;
 
+import es.vicmonmena.openuax.database.TravelsDatabaseHelper;
 import es.vicmonmena.openuax.model.TravelInfo;
 
 import android.app.ListActivity;
@@ -20,35 +21,19 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
- * VERSION 1:
- * Este ejemplo muestra el uso de una clase ListActivity que muestra una lista de paises visitados.
- * 
- * Para ello hacemos uso de una extension del ArrayAdapter que contiene una lista de objetos TravelInfo.
- * El metodo getView del adapter se encarga de mostrar la informacion de cada entrada TravelInfo de la
- * forma correcta en la vista.
- * 
- * VERSION 2:
- * Anadimos en esta version los controles necesarios para lanzas las activities correspondientes
- * a mostrar un viaje mediante un click (metodo onListItemClick) y para crear un viaje usando el menu
- * de  opciones (onCreateOptionsMenu y onMenuItemSelected).
- * 
- * 
+ * @author vicmonmena
  */
 public class TravelListActivity extends ListActivity{
+	
+	private static TravelsDatabaseHelper dbHelper;
 	
 	static int REQUEST_CODE_TRAVEL_CREATED = 10;
 	static int REQUEST_CODE_TRAVEL_UPDATED = 20;
 	
-	/**
-	 * Posición del item en el list view que va a ser actualizado.
-	 * ¡¡ NO ME GUSTA NADA !! Investigar alternativa.
-	 */
-	int position = -1;
-	
 	private TravelAdapter adapter;
-//	ListView lv;
 	
 	private class TravelAdapter extends ArrayAdapter<TravelInfo>{
 		
@@ -105,11 +90,6 @@ public class TravelListActivity extends ListActivity{
 		public int getCount() {
 			return travels.size();
 		}
-		
-		public void update(int position, TravelInfo travel) {
-			travels.set(position, travel);
-			notifyDataSetChanged();
-		}
 	}
 	
 	static class ViewHolder {
@@ -120,35 +100,17 @@ public class TravelListActivity extends ListActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        //Generamos los datos
-        ArrayList<TravelInfo> values = getData();
-        
+
+        dbHelper = new TravelsDatabaseHelper(this);
+
+        //Obtenemos los datos de la base de datos
+        ArrayList<TravelInfo> values = dbHelper.getTravelsList();
+
         //Creamos el adapter y lo asociamos a la activity
         adapter = new TravelAdapter(this, values);
-        
+
         setListAdapter(adapter);
         registerForContextMenu(getListView());
-    }
-    
-    //Generamos datos a mostrar
-    //En una aplicacion funcional se tomarian de base de datos o algun otro medio
-    private ArrayList<TravelInfo> getData(){
-    	ArrayList<TravelInfo> travels = new ArrayList<TravelInfo>();
-
-        TravelInfo info = new TravelInfo("Londres", "UK", 2012, "¡Juegos Olimpicos!");
-        TravelInfo info2 = new TravelInfo("Paris", "Francia", 2007);
-        TravelInfo info3 = new TravelInfo("Gotham City", "EEUU", 2011, "¡¡Batman!!");
-        TravelInfo info4 = new TravelInfo("Hamburgo", "Alemania", 2009);
-        TravelInfo info5 = new TravelInfo("Pekin", "China", 2011);
-
-        travels.add(info);
-        travels.add(info2);
-        travels.add(info3);
-        travels.add(info4);
-        travels.add(info5);
-        
-        return travels;
     }
 
     @Override
@@ -174,30 +136,19 @@ public class TravelListActivity extends ListActivity{
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		
+
 		//Tomamos la informacion del viaje seleccionado
 		TravelInfo info = adapter.getItem(position);
-		
+
 		//Creamos el Intent para lanzar la Activity TravelActivity
 		Intent intent = new Intent(this, TravelActivity.class);
-		
-		//Anadimos como extras los datos que consideremos necesarios para la Activity a lanzar
-		intent.putExtra(TravelInfo.EXTRA_COUNTRY, info.getCountry());
-		intent.putExtra(TravelInfo.EXTRA_CITY, info.getCity());
-		intent.putExtra(TravelInfo.EXTRA_YEAR, info.getYear());
-		intent.putExtra(TravelInfo.EXTRA_NOTE, info.getNote());
-		
-		/* Nota de vicmonmena:
-		 * ------------------
-		 *  La alternativa a pasar cada campo de TravelInfo como un EXTRA seía:
-		 *  - Utilizar parámetro Bundle en putExtra(...)
-		 *  - Extender de Parcelable la clase TravelInfo u otra con los 
-		 *  	parámetros que queramos pasar. 
-		 */
+
+		//Anadimos como extra el objeto viaje seleccionado en el ListView
+		intent.putExtra(TravelInfo.EXTRA_TRAVEL, adapter.getItem(position));
 		
 		//Lanzamos la Activity con el Intent creado
 		startActivity(intent);
-		
+
 		super.onListItemClick(l, v, position, id);
 	}
 	
@@ -207,44 +158,33 @@ public class TravelListActivity extends ListActivity{
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (resultCode == RESULT_OK) {
-			if (requestCode == REQUEST_CODE_TRAVEL_CREATED) {
-				
-				/*
-				 * Nota de vicmonmena:
-				 * -----------------------
-				 * Distingo entre creación y modificación para mostrar la 
-				 * alternativa, usando PARCEL.
-				 */ 
-				
-		    	if (data != null) {
-	    			TravelInfo travel = new TravelInfo();
-	    			
-	    			if (data.hasExtra(TravelInfo.EXTRA_COUNTRY)) {
-	    				travel.setCountry(data.getStringExtra(TravelInfo.EXTRA_COUNTRY));
-	    			}
-	    			
-	    			if (data.hasExtra(TravelInfo.EXTRA_CITY)) {
-	    				travel.setCity(data.getStringExtra(TravelInfo.EXTRA_CITY));
-	    			}
-	    			
-	    			if (data.hasExtra(TravelInfo.EXTRA_YEAR)) {
-	    				travel.setYear(Integer.parseInt(data.getStringExtra(TravelInfo.EXTRA_YEAR)));
-	    			}
-	    			
-	    			if (data.hasExtra(TravelInfo.EXTRA_NOTE)) {
-	    				travel.setNote(data.getStringExtra(TravelInfo.EXTRA_NOTE));
-	    			}
-	    			
-	    			adapter.add(travel);
-		    	}
-			} else if (requestCode == REQUEST_CODE_TRAVEL_UPDATED) {
-				if (data != null && data.hasExtra(TravelInfo.EXTRA_TRAVEL)) {
-					TravelInfo travel = data.getParcelableExtra(TravelInfo.EXTRA_TRAVEL);
-					adapter.update(position, travel);
+			if (data != null && data.hasExtra(TravelInfo.EXTRA_TRAVEL)) {
+				TravelInfo travel = data.getParcelableExtra(TravelInfo.EXTRA_TRAVEL);
+				if (requestCode == REQUEST_CODE_TRAVEL_CREATED) {
+					dbHelper.insertTravel(dbHelper.getWritableDatabase(), 
+						travel.getCity(), travel.getCountry(), 
+						travel.getYear(), travel.getNote());
+				} else if (requestCode == REQUEST_CODE_TRAVEL_UPDATED) {
+					dbHelper.updateTravel(dbHelper.getWritableDatabase(), travel);
 				}
-	    		
+			} else {
+				Toast.makeText(this, getString(R.string.error_travel_information_empty), Toast.LENGTH_SHORT).show();
 			}
+			
+			refreshUI();
 		}
+	}
+	
+	/**
+	 * Actualiza el adapter y refresca la lista para mostrar los nuevos datos.
+	 */
+	public void refreshUI() {
+		
+		ArrayList<TravelInfo> values = dbHelper.getTravelsList();
+		//adapter.setTravels(values);
+        //adapter.notifyDataSetChanged();
+		adapter = new TravelAdapter(this, values);
+        setListAdapter(adapter);
 	}
 	
 	@Override
@@ -266,11 +206,12 @@ public class TravelListActivity extends ListActivity{
 			case R.id.ctx_menu_option_edit:
 				//Creamos el Intent para lanzar la Activity EditTravelActivity
 				Intent intent = new Intent(TravelListActivity.this, EditTravelActivity.class);
-				position = info.position;
+				intent.putExtra(TravelInfo.EXTRA_TRAVEL, adapter.getItem(info.position));
 				startActivityForResult(intent, REQUEST_CODE_TRAVEL_UPDATED);
 				break;
 			default:
-				adapter.remove(adapter.getItem(info.position));
+				dbHelper.deleteTravel(dbHelper.getWritableDatabase(), adapter.getItem(info.position));
+				refreshUI();
 				break;
 		}
 		return true;

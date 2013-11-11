@@ -31,34 +31,14 @@ public class TravelActivity extends Activity {
     	Intent intent = getIntent();
     	
     	if (intent != null) {
-    			
-			travel = new TravelInfo();
-			
-			if (intent.hasExtra(TravelInfo.EXTRA_COUNTRY)) {
-				travel.setCountry(intent.getExtras().getString(TravelInfo.EXTRA_COUNTRY));
-				((TextView) findViewById(R.id.countryLabel)).setText(travel.getCountry());
+    		
+			if (getIntent().hasExtra(TravelInfo.EXTRA_TRAVEL)) {
+				travel = getIntent().getParcelableExtra(TravelInfo.EXTRA_TRAVEL);
+					((TextView) findViewById(R.id.countryLabel)).setText(travel.getCountry());
+					((TextView) findViewById(R.id.cityLabel)).setText(travel.getCity());
+					((TextView) findViewById(R.id.yearLabel)).setText(""+travel.getYear());
+					((TextView) findViewById(R.id.noteLabel)).setText(travel.getNote());
 			}
-			
-			if (intent.hasExtra(TravelInfo.EXTRA_CITY)) {
-				travel.setCity(intent.getExtras().getString(TravelInfo.EXTRA_CITY));
-				((TextView) findViewById(R.id.cityLabel)).setText(travel.getCity());
-			}
-			
-			if (intent.hasExtra(TravelInfo.EXTRA_YEAR)) {
-				travel.setYear(intent.getExtras().getInt(TravelInfo.EXTRA_YEAR));
-				((TextView) findViewById(R.id.yearLabel)).setText(""+travel.getYear());
-			}
-			
-			if (intent.hasExtra(TravelInfo.EXTRA_NOTE)) {
-				travel.setNote(intent.getExtras().getString(TravelInfo.EXTRA_NOTE));
-				((TextView) findViewById(R.id.noteLabel)).setText(travel.getNote());
-			}
-    		/*
-    		 * Si uitilizásemos Parcelable como alternativa no tendríamos que 
-    		 * recoger parámetro a parámetro (travel.setXXX()), bastaría:
-    		 * 
-    		 * travel = 
-    		 */
     	}
     }
     

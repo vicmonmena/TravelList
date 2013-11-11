@@ -1,5 +1,5 @@
 <resources>
 
     <string name="msg_invalid_option">Opción no válida</string>
-
+    <string name="error_travel_information_empty">Error: no hay información del viaje.</string>
 </resources>

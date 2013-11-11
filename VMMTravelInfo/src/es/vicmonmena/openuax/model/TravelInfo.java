@@ -9,7 +9,7 @@ import android.os.Parcelable;
  *
  * @author vicmonmena
  */
-public class TravelInfo implements Parcelable {
+public class TravelInfo implements Parcelable, BaseInfo{
 
 	public static final String EXTRA_CITY = "extra_city";
 	public static final String EXTRA_COUNTRY = "extra_country";
@@ -21,6 +21,8 @@ public class TravelInfo implements Parcelable {
 	private String country;
 	private int year;
 	private String note;
+	// Para la persistencia
+	private int id;
 	
 	public TravelInfo() {
 		// TODO Auto-generated constructor stub
@@ -35,6 +37,14 @@ public class TravelInfo implements Parcelable {
 	
 	public TravelInfo(String city, String country, int year){
 		this(city, country, year, null);
+	}
+	
+	public TravelInfo(int id, String city, String country, int year, String note){
+		this.id = id;
+		this.city = city;
+		this.country = country;
+		this.year = year;
+		this.note = note;
 	}
 	
 	public TravelInfo(Parcel travel) {
@@ -81,6 +91,7 @@ public class TravelInfo implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(id);
 		dest.writeInt(year);
 	    dest.writeString(country);
 	    dest.writeString(city);
@@ -88,6 +99,7 @@ public class TravelInfo implements Parcelable {
 	}
 	
 	private void readFromParcel(Parcel in) {
+		id = in.readInt();
 		year = in.readInt();
 	    country = in.readString();
 	    city = in.readString();
@@ -104,4 +116,15 @@ public class TravelInfo implements Parcelable {
             return new TravelInfo[size];
         }
     };
+
+	@Override
+	public int getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(int id) {
+		this.id = id;
+		
+	}
 }

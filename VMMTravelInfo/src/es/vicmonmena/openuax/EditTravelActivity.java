@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -22,10 +23,27 @@ public class EditTravelActivity extends Activity {
 	 */
 	private String TAG = EditTravelActivity.class.getName();
 	
+	private TravelInfo travel;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_travel_activity_layout);
+	}
+	
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		
+		// Es edición?
+		if (getIntent().hasExtra(TravelInfo.EXTRA_TRAVEL)) {
+			travel = getIntent().getParcelableExtra(TravelInfo.EXTRA_TRAVEL);
+				((TextView) findViewById(R.id.countryField)).setText(travel.getCountry());
+				((TextView) findViewById(R.id.cityField)).setText(travel.getCity());
+				((TextView) findViewById(R.id.yearField)).setText(""+travel.getYear());
+				((TextView) findViewById(R.id.noteField)).setText(travel.getNote());
+		}
 	}
 	/**
 	 * Called when click on view parameter.
@@ -45,22 +63,16 @@ public class EditTravelActivity extends Activity {
 				
 				Intent intent = new Intent();
 				
-				//Bundle b = new Bundle();
-				//b.putString(TravelInfo.EXTRA_COUNTRY, ((EditText) findViewById(R.id.countryField)).getText().toString());
-				//intent.putExtras(b);
+				// Si es creacion instanciamos el objeto
+				if (travel == null) {
+					travel = new TravelInfo();
+				}
 				
-				// Se utilizaría esta forma o PARCELABLE, ¡NO AMBAS!
-				intent.putExtra(TravelInfo.EXTRA_COUNTRY, ((EditText) findViewById(R.id.countryField)).getText().toString());
-				intent.putExtra(TravelInfo.EXTRA_CITY, ((EditText) findViewById(R.id.cityField)).getText().toString());
-				intent.putExtra(TravelInfo.EXTRA_YEAR, ((EditText) findViewById(R.id.yearField)).getText().toString());
-				intent.putExtra(TravelInfo.EXTRA_NOTE, ((EditText) findViewById(R.id.noteField)).getText().toString());
-				
-				// Alternativa: PARCELABLE (Para modificaciones)
-				TravelInfo travel = new TravelInfo(
-						((EditText) findViewById(R.id.countryField)).getText().toString(), 
-						((EditText) findViewById(R.id.cityField)).getText().toString(),
-						Integer.parseInt(((EditText) findViewById(R.id.yearField)).getText().toString()),
-						((EditText) findViewById(R.id.noteField)).getText().toString());
+				// Si es edición mantenemos el id
+				travel.setCountry(((EditText) findViewById(R.id.countryField)).getText().toString()); 
+				travel.setCity(((EditText) findViewById(R.id.cityField)).getText().toString());
+				travel.setYear(Integer.parseInt(((EditText) findViewById(R.id.yearField)).getText().toString()));
+				travel.setNote(((EditText) findViewById(R.id.noteField)).getText().toString());
 				
 				intent.putExtra(TravelInfo.EXTRA_TRAVEL, travel);
 				// ----------------------------------------------
