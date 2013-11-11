@@ -10,12 +10,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/travelinfo_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" android:logo="@drawable/travelinfo_logo">
         <activity
             android:name=".TravelListActivity"
-            android:label="@string/title_activity_travel_list" >
+            android:label="@string/title_activity_travel_list" 
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,6 +31,11 @@
             android:name="es.vicmonmena.openuax.EditTravelActivity"
             android:label="@string/new_travel" >
         </activity>
+        <provider
+            android:name=".database.TravelsProvider"
+            android:authorities="es.vicmonmena.openuax.travellist"
+            android:multiprocess="true"
+            />
     </application>
 
 </manifest>

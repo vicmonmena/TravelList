@@ -23,4 +23,8 @@
     <string name="ctx_menu_title">¿Qué quieres?</string>
     <string name="ctx_menu_option_edit">Modificarlo</string>
     <string name="ctx_menu_option_delete">Borrarlo</string>
+    
+    <string name="dialog_confirm_delete">¿Seguro?</string>
+    <string name="dialog_confirm_delete_yes">Si</string>
+    <string name="dialog_confirm_delete_no">Mejor no</string>
 </resources>

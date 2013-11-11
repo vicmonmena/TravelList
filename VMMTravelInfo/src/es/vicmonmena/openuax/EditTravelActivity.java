@@ -1,15 +1,21 @@
 package es.vicmonmena.openuax;
 
-import es.vicmonmena.openuax.model.TravelInfo;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import es.vicmonmena.openuax.database.TravelsProvider;
+import es.vicmonmena.openuax.database.utils.TravelsConstants;
+import es.vicmonmena.openuax.model.TravelInfo;
 
 /**
  * @author vicmonmena
@@ -22,10 +28,45 @@ public class EditTravelActivity extends Activity {
 	 */
 	private String TAG = EditTravelActivity.class.getName();
 	
+	private TravelInfo travel;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_travel_activity_layout);
+	}
+	
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		
+		// Es edición?
+		if (getIntent().hasExtra(TravelInfo.EXTRA_TRAVEL)) {
+			
+			int travelId = getIntent().getExtras().getInt(TravelInfo.EXTRA_TRAVEL);
+			ContentResolver cr = getContentResolver();
+			Uri uri = Uri.parse(TravelsProvider.CONTENT_URI + "/" + travelId);
+	        Cursor c = cr.query(uri, TravelsConstants.PROJECTION_FULL, 
+	        	null, null, null);
+	        
+	        if (c.moveToFirst()) {
+				travel = new TravelInfo(
+					c.getInt(c.getColumnIndex(TravelsConstants._ID)),
+					c.getString(c.getColumnIndex(TravelsConstants.CITY)),
+					c.getString(c.getColumnIndex(TravelsConstants.COUNTRY)),
+					c.getInt(c.getColumnIndex(TravelsConstants.YEAR)),
+					c.getString(c.getColumnIndex(TravelsConstants.NOTE)));
+				
+				((TextView) findViewById(R.id.countryField)).setText(travel.getCountry());
+				((TextView) findViewById(R.id.cityField)).setText(travel.getCity());
+				((TextView) findViewById(R.id.yearField)).setText(""+travel.getYear());
+				((TextView) findViewById(R.id.noteField)).setText(travel.getNote());
+	        }
+		} else {
+			// Es creación => instanciamos el objeto vacío
+			travel = new TravelInfo();
+		}
 	}
 	/**
 	 * Called when click on view parameter.
@@ -45,25 +86,13 @@ public class EditTravelActivity extends Activity {
 				
 				Intent intent = new Intent();
 				
-				//Bundle b = new Bundle();
-				//b.putString(TravelInfo.EXTRA_COUNTRY, ((EditText) findViewById(R.id.countryField)).getText().toString());
-				//intent.putExtras(b);
-				
-				// Se utilizaría esta forma o PARCELABLE, ¡NO AMBAS!
-				intent.putExtra(TravelInfo.EXTRA_COUNTRY, ((EditText) findViewById(R.id.countryField)).getText().toString());
-				intent.putExtra(TravelInfo.EXTRA_CITY, ((EditText) findViewById(R.id.cityField)).getText().toString());
-				intent.putExtra(TravelInfo.EXTRA_YEAR, ((EditText) findViewById(R.id.yearField)).getText().toString());
-				intent.putExtra(TravelInfo.EXTRA_NOTE, ((EditText) findViewById(R.id.noteField)).getText().toString());
-				
-				// Alternativa: PARCELABLE (Para modificaciones)
-				TravelInfo travel = new TravelInfo(
-						((EditText) findViewById(R.id.countryField)).getText().toString(), 
-						((EditText) findViewById(R.id.cityField)).getText().toString(),
-						Integer.parseInt(((EditText) findViewById(R.id.yearField)).getText().toString()),
-						((EditText) findViewById(R.id.noteField)).getText().toString());
+				// Si es edición mantenemos el id
+				travel.setCountry(((EditText) findViewById(R.id.countryField)).getText().toString()); 
+				travel.setCity(((EditText) findViewById(R.id.cityField)).getText().toString());
+				travel.setYear(Integer.parseInt(((EditText) findViewById(R.id.yearField)).getText().toString()));
+				travel.setNote(((EditText) findViewById(R.id.noteField)).getText().toString());
 				
 				intent.putExtra(TravelInfo.EXTRA_TRAVEL, travel);
-				// ----------------------------------------------
 				
 				setResult(RESULT_OK, intent);
 				finish();

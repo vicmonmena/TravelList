@@ -26,4 +26,8 @@
     <string name="ctx_menu_title">What do you want?</string>
     <string name="ctx_menu_option_edit">Edit travel</string>
     <string name="ctx_menu_option_delete">Delete travel</string>
+
+    <string name="dialog_confirm_delete">Are you sure?</string>
+    <string name="dialog_confirm_delete_yes">Yes</string>
+    <string name="dialog_confirm_delete_no">Not better</string>
 </resources>
