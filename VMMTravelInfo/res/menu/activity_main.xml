@@ -2,7 +2,12 @@
     <item android:id="@+id/menu_new_travel"
         android:title="@string/menu_new_travel"
         android:orderInCategory="100"
-        android:showAsAction="never" 
-        android:icon="@drawable/new_travel"/>
+        android:showAsAction="ifRoom" 
+        android:icon="@drawable/ic_action_new"/>
+    <item android:id="@+id/menu_info_app"
+        android:title="@string/app_info"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom" 
+        android:icon="@drawable/ic_action_info"/>
 </menu>
 

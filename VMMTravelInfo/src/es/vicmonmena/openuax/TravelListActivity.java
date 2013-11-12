@@ -1,5 +1,6 @@
 package es.vicmonmena.openuax;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ContentResolver;
@@ -8,12 +9,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,13 @@ import es.vicmonmena.openuax.model.TravelInfo;
 /**
  * @author vicmonmena
  */
-public class TravelListActivity extends ListActivity{
+public class TravelListActivity extends ListActivity {
 
-	static int REQUEST_CODE_TRAVEL_CREATED = 10;
-	static int REQUEST_CODE_TRAVEL_UPDATED = 20;
+	static final int REQUEST_CODE_TRAVEL_CREATED = 10;
+	static final int REQUEST_CODE_TRAVEL_UPDATED = 20;
+	
+	static final int LEFT_TAB = 0;
+	static final int RIGHT_TAB = 1;
 	
 	private TravelCursorAdapter adapter;
 	
@@ -85,6 +89,8 @@ public class TravelListActivity extends ListActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initActionBar();
+        
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(TravelsProvider.CONTENT_URI, 
         	TravelsConstants.PROJECTION, null, null, TravelsConstants.YEAR);
@@ -95,23 +101,52 @@ public class TravelListActivity extends ListActivity{
         registerForContextMenu(getListView());
     }
 
+    /**
+     * Inicializa la action bar.
+     */
+    private void initActionBar() {
+    	
+    	final ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actiion_bar_shape));
+        
+	}
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
+    	// Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
     
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		
 		switch (item.getItemId()) {
+			case android.R.id.home:
+				Toast.makeText(this, getString(R.string.app_name), Toast.LENGTH_SHORT).show();
+				break;
 			case R.id.menu_new_travel:
 				//Creamos el Intent para lanzar la Activity EditTravelActivity
 				Intent intent = new Intent(TravelListActivity.this, EditTravelActivity.class);		
 				startActivityForResult(intent, REQUEST_CODE_TRAVEL_CREATED);
 				break;
+			case R.id.menu_info_app:
+				new AlertDialog.Builder(this)
+            	.setTitle(R.string.app_info)
+            	.setMessage(R.string.app_info_content)
+            	.setNeutralButton(R.string.ok,
+            		new DialogInterface.OnClickListener() {
+                    	public void onClick(DialogInterface dialog, int whichButton) {
+                    		dialog.dismiss();
+                    	}
+                	})
+            .create()
+            .show();
+				break;
 			}
-		
 		return super.onMenuItemSelected(featureId, item);
 	}
 
@@ -218,25 +253,5 @@ public class TravelListActivity extends ListActivity{
 				break;
 		}
 		return true;
-	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		// Mantenemos el estado del listado actual 
-		//outState.putParcelableArrayList("currentList", adapter.getTravels());
-		super.onSaveInstanceState(outState);
-	}
-	
-	@Override
-	protected void onRestoreInstanceState(Bundle state) {
-		/*
-		if (state != null) {
-			if (state.getParcelableArrayList("currentList") != null) {
-				ArrayList<TravelInfo> travels = state.getParcelableArrayList("currentList");
-				adapter.setTravels(travels);
-			}
-		}
-		*/
-		super.onRestoreInstanceState(state);
 	}
 }
