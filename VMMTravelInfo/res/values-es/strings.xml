@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="support_email_address">vicmonmenadev@gmail.com</string>
+    
     <string name="app_name">Travel Info</string>
     <string name="app_info">Esta app</string>
     <string name="app_info_content">Aplicación desarrollada por vicmonmena. Desarrollo para el Sistema Operativo Android. OpenUAX</string>
