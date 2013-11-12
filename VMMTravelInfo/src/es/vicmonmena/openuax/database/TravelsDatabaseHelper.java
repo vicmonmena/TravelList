@@ -30,12 +30,12 @@ public class TravelsDatabaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		
 		db.execSQL("CREATE TABLE " + TABLE_NAME + " (" +
-				TravelsConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-				TravelsConstants.CITY + " TEXT NOT NULL, " +
-				TravelsConstants.COUNTRY + " TEXT NOT NULL, " +
-				TravelsConstants.YEAR + " INTEGER NOT NULL, " +
-				TravelsConstants.NOTE + " TEXT " +
-			");");
+			TravelsConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+			TravelsConstants.CITY + " TEXT NOT NULL, " +
+			TravelsConstants.COUNTRY + " TEXT NOT NULL, " +
+			TravelsConstants.YEAR + " INTEGER NOT NULL, " +
+			TravelsConstants.NOTE + " TEXT " + ");"
+		);
 		
 		
 		//Initial data

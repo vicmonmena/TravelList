@@ -2,6 +2,7 @@
     <item android:id="@+id/menu_share_travel"
         android:title="@string/menu_share_travel"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="never" 
+        android:icon="@drawable/share_travel"/>
 </menu>
 
