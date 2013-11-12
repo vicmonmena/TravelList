@@ -4,6 +4,9 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.Notification.Builder;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -150,41 +153,9 @@ public class TravelListActivity extends ListActivity {
 			case R.id.menu_report:
 				ReportDialog rDialog = new ReportDialog(this);
 				rDialog.show();
-				//createCstomDialog();
 				break;
 			}
 		return super.onMenuItemSelected(featureId, item);
-	}
-
-	/**
-	 * Crea un Dialog personalizado, que permite reportar cuestiones sobre la aplicación.
-	 */
-	private void createCstomDialog() {
-		final Dialog dialog = new Dialog(this);
-    	dialog.setTitle(R.string.report_title);
-    	dialog.setContentView(R.layout.report_dialog);
-    	
-    	Button sendButton = ((Button) dialog.findViewById(R.id.report_send));
-    	sendButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-    	
-    	Button cancelButton = ((Button) dialog.findViewById(R.id.report_cancel));
-    	cancelButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-			}
-		});
-
-    	dialog.show();
-		
 	}
 
 	@Override
