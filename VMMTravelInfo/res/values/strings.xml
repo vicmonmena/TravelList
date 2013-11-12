@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="support_email_address">vicmonmenadev@gmail.com</string>
+    
     <string name="app_name">Travel Info</string>
     <string name="app_info">This app</string>
     <string name="app_info_content">Developed by vicmonmena. Desarrollo para el Sistema Operativo Android. OpenUAX</string>
-    <string name="ok">Ok!</string>
+    
+    <string name="ok">Ok</string>
     <string name="new_travel">New Travel</string>
     
     <string name="city_hint">City</string>
@@ -24,6 +27,7 @@
     
     <string name="menu_new_travel">New travel</string>
     <string name="menu_share_travel">Share travel</string>
+    <string name="menu_report">Report</string>
     
     <string name="ctx_menu_title">What do you want?</string>
     <string name="ctx_menu_option_edit">Edit travel</string>

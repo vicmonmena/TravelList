@@ -4,7 +4,7 @@
     <string name="app_name">Travel Info</string>
     <string name="app_info">Esta app</string>
     <string name="app_info_content">Aplicación desarrollada por vicmonmena. Desarrollo para el Sistema Operativo Android. OpenUAX</string>
-    <string name="ok">Vale!</string>
+    <string name="ok">Vale</string>
     <string name="new_travel">Nuevo viaje</string>
     
     <string name="city_hint">Ciudad</string>
@@ -25,6 +25,7 @@
     
     <string name="menu_new_travel">Nuevo viaje</string>
     <string name="menu_share_travel">Compartir</string>
+    <string name="menu_report">Informar</string>
     
     <string name="ctx_menu_title">¿Qué quieres?</string>
     <string name="ctx_menu_option_edit">Modificarlo</string>

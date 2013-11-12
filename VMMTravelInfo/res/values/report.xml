@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="report_title">Let us know!</string>
+    <string name="report_info">Input fields in order to send us an email</string>
+    <string name="report_text_hint">Write here...</string>
+    <string name="report_send">Send</string>
+    <string name="report_cancel">Cancel</string>
+    <string name="report_validation">Please! Imput text in order to send the email</string>
+    <string-array name="task_types_array">
+        <item>New feature</item>
+        <item>Bug</item>
+        <item>Improvement</item>
+        <item>Comment</item>
+    </string-array>
+</resources>

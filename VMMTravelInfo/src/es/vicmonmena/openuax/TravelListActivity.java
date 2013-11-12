@@ -2,6 +2,7 @@ package es.vicmonmena.openuax;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -17,8 +18,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ import android.widget.Toast;
 import es.vicmonmena.openuax.database.TravelsProvider;
 import es.vicmonmena.openuax.database.utils.TravelsConstants;
 import es.vicmonmena.openuax.model.TravelInfo;
+import es.vicmonmena.openuax.view.ReportDialog;
 
 /**
  * @author vicmonmena
@@ -126,14 +130,6 @@ public class TravelListActivity extends ListActivity {
 		
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				Toast.makeText(this, getString(R.string.app_name), Toast.LENGTH_SHORT).show();
-				break;
-			case R.id.menu_new_travel:
-				//Creamos el Intent para lanzar la Activity EditTravelActivity
-				Intent intent = new Intent(TravelListActivity.this, EditTravelActivity.class);		
-				startActivityForResult(intent, REQUEST_CODE_TRAVEL_CREATED);
-				break;
-			case R.id.menu_info_app:
 				new AlertDialog.Builder(this)
             	.setTitle(R.string.app_info)
             	.setMessage(R.string.app_info_content)
@@ -146,8 +142,49 @@ public class TravelListActivity extends ListActivity {
             .create()
             .show();
 				break;
+			case R.id.menu_new_travel:
+				//Creamos el Intent para lanzar la Activity EditTravelActivity
+				Intent intent = new Intent(TravelListActivity.this, EditTravelActivity.class);		
+				startActivityForResult(intent, REQUEST_CODE_TRAVEL_CREATED);
+				break;
+			case R.id.menu_report:
+				ReportDialog rDialog = new ReportDialog(this);
+				rDialog.show();
+				//createCstomDialog();
+				break;
 			}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	/**
+	 * Crea un Dialog personalizado, que permite reportar cuestiones sobre la aplicación.
+	 */
+	private void createCstomDialog() {
+		final Dialog dialog = new Dialog(this);
+    	dialog.setTitle(R.string.report_title);
+    	dialog.setContentView(R.layout.report_dialog);
+    	
+    	Button sendButton = ((Button) dialog.findViewById(R.id.report_send));
+    	sendButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+    	
+    	Button cancelButton = ((Button) dialog.findViewById(R.id.report_cancel));
+    	cancelButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+
+    	dialog.show();
+		
 	}
 
 	@Override
