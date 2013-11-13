@@ -41,6 +41,8 @@ public class TravelListActivity extends ListActivity {
 	
 	private TravelCursorAdapter adapter;
 	
+	ActionBar actionBar;
+	
 	final class TravelCursorAdapter extends ResourceCursorAdapter {
 
 		private LayoutInflater mInflater;
@@ -89,7 +91,7 @@ public class TravelListActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         initActionBar();
         
         ContentResolver cr = getContentResolver();
@@ -107,10 +109,11 @@ public class TravelListActivity extends ListActivity {
      */
     private void initActionBar() {
     	
-    	final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+    	actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actiion_bar_shape));
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setBackgroundDrawable(
+        	getResources().getDrawable(R.drawable.action_bar_shape));
         
 	}
     
@@ -122,35 +125,36 @@ public class TravelListActivity extends ListActivity {
         return super.onCreateOptionsMenu(menu);
     }
     
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		
-		switch (item.getItemId()) {
-			case android.R.id.home:
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	// Handle presses on the action bar items
+        switch (item.getItemId()) {
+	        case android.R.id.home:
 				new AlertDialog.Builder(this)
-            	.setTitle(R.string.app_info)
-            	.setMessage(R.string.app_info_content)
-            	.setNeutralButton(R.string.ok,
-            		new DialogInterface.OnClickListener() {
-                    	public void onClick(DialogInterface dialog, int whichButton) {
-                    		dialog.dismiss();
-                    	}
-                	})
-            .create()
-            .show();
-				break;
+	        	.setTitle(R.string.app_info)
+	        	.setMessage(R.string.app_info_content)
+	        	.setNeutralButton(R.string.ok,
+	        		new DialogInterface.OnClickListener() {
+	                	public void onClick(DialogInterface dialog, int whichButton) {
+	                		dialog.dismiss();
+	                	}
+	            	})
+	        .create()
+	        .show();
+				return true;
 			case R.id.menu_new_travel:
 				//Creamos el Intent para lanzar la Activity EditTravelActivity
 				Intent intent = new Intent(TravelListActivity.this, EditTravelActivity.class);		
 				startActivityForResult(intent, REQUEST_CODE_TRAVEL_CREATED);
-				break;
+				return true;
 			case R.id.menu_report:
 				ReportDialog rDialog = new ReportDialog(this);
 				rDialog.show();
-				break;
-			}
-		return super.onMenuItemSelected(featureId, item);
-	}
+				return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
