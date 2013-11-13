@@ -12,35 +12,37 @@
 
     <EditText
         android:id="@+id/countryField"
+        style="@style/firstFieldStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/country_hint"
-        android:singleLine="true"
-        android:layout_weight="1"/>
+        android:hint="@string/country_hint" 
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/cityField"
+        style="@style/firstFieldStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/city_hint" 
-        android:singleLine="true"
-        android:layout_weight="1"/>
+        android:hint="@string/city_hint"
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/yearField"
+        style="@style/firstFieldStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/year_hint"
-        android:inputType="number"
-        android:singleLine="true"
-        android:layout_weight="1"/>
+        android:inputType="number" 
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/noteField"
+        style="@style/secondFieldStyle"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:hint="@string/note_hint" 
-        android:layout_weight="6"/>
+        android:layout_weight="3"
+        android:gravity="top"/>
     
     <Button 
         android:id="@+id/save_travel"
@@ -48,9 +50,6 @@
         android:layout_height="wrap_content"
         android:text="@string/save_label"
         android:layout_gravity="center_horizontal"
-        android:onClick="onClickView"
-        android:layout_weight="1"
-        android:background="#F00"
-        android:textColor="#FFF"/>
+        android:onClick="onClickView"/>
 
 </LinearLayout>

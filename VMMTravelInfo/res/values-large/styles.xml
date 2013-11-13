@@ -21,9 +21,12 @@
         <item name="android:layout_marginTop">3dp</item>
         <item name="android:padding">3dp</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:background">#F2F2F2</item>
+    </style>
+    <style name="firstFieldStyle" parent="@style/fieldStyle">
+        <item name="android:background">#722F37</item>
+        <item name="android:textColor">#FFFFFF</item>
     </style>
     <style name="secondFieldStyle" parent="@style/fieldStyle">
-        <item name="android:textColor">#722F37</item>
+        <item name="android:background">#F2F2F2</item>
     </style>
 </resources>

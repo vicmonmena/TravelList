@@ -10,7 +10,8 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/report_info" />
+        android:text="@string/report_info" 
+        style="@style/secondFieldStyle"/>
 
     <Spinner
         android:id="@+id/report_task_type"

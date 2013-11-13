@@ -19,29 +19,25 @@
 	        style="@style/firstFieldStyle"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:hint="@string/country_hint" />
+	        android:layout_weight="1" />
 	
 	    <TextView
 	        android:id="@+id/cityLabel"
 	        style="@style/secondFieldStyle"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:hint="@string/city_hint" />
+	        android:layout_weight="1"/>
 	
 	    <TextView
 	        android:id="@+id/yearLabel"
 	        style="@style/firstFieldStyle"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:hint="@string/year_hint" />
+	        android:layout_weight="1"/>
     </LinearLayout>
     <TextView
         android:id="@+id/noteLabel"
         style="@style/bottomFieldStyle"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:hint="@string/note_hint"/>
+        android:layout_height="fill_parent"/>
 </LinearLayout>

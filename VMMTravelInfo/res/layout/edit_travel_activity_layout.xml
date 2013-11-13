@@ -3,6 +3,7 @@
     android:id="@+id/LinearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#722F37"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -12,7 +13,7 @@
 
     <EditText
         android:id="@+id/countryField"
-        style="@style/firstFieldStyle"
+        style="@style/fieldStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/country_hint" 
@@ -20,7 +21,7 @@
 
     <EditText
         android:id="@+id/cityField"
-        style="@style/firstFieldStyle"
+        style="@style/fieldStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/city_hint"
@@ -28,7 +29,7 @@
 
     <EditText
         android:id="@+id/yearField"
-        style="@style/firstFieldStyle"
+        style="@style/fieldStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/year_hint"
@@ -37,7 +38,7 @@
 
     <EditText
         android:id="@+id/noteField"
-        style="@style/firstFieldStyle"
+        style="@style/fieldStyle"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:hint="@string/note_hint" 

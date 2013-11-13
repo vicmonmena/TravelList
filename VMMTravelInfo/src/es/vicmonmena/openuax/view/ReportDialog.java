@@ -72,7 +72,8 @@ public class ReportDialog extends Dialog implements OnClickListener {
 	private void sendEmail(String address, String subject, String message) {
 		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{address});
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, 
+        	context.getString(R.string.app_name) + " - " + subject);
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
         emailIntent.setType("text/plain");
         context.startActivity(Intent.createChooser(emailIntent, "Sending email..."));

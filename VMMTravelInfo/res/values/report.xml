@@ -2,8 +2,8 @@
 <resources>
     
     <string name="report_title">Let us know!</string>
-    <string name="report_info">Input fields in order to send us an email</string>
-    <string name="report_text_hint">Write here...</string>
+    <string name="report_info">Send us an email within info</string>
+    <string name="report_text_hint">Write here&#8230;</string>
     <string name="report_send">Send</string>
     <string name="report_cancel">Cancel</string>
     <string name="report_validation">Please! Imput text in order to send the email</string>

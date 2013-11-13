@@ -3,10 +3,13 @@
 
     <string name="support_email_address">vicmonmenadev@gmail.com</string>
     
-    <string name="app_name">Travel Info</string>
+    <string name="app_name">VMM Travel List</string>
     <string name="app_info">This app</string>
-    <string name="app_info_content">Developed by vicmonmena. Desarrollo para el Sistema Operativo Android. OpenUAX</string>
-    
+    <string name="app_info_content">
+        Developed by vicmonmena. 
+        Develop for Android Operative System. 
+        OpenUAX
+    </string>
     <string name="ok">Ok</string>
     <string name="new_travel">New Travel</string>
     
