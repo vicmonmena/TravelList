@@ -118,9 +118,7 @@ public class TravelListActivity extends ListActivity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	// Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_main, menu);
+        getMenuInflater().inflate(R.menu.activity_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
     

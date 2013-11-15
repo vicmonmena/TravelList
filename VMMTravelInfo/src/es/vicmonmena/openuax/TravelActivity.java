@@ -1,5 +1,6 @@
 package es.vicmonmena.openuax;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -19,7 +20,9 @@ import es.vicmonmena.openuax.model.TravelInfo;
  */
 public class TravelActivity extends Activity {
 	
-	TravelInfo travel;
+	private TravelInfo travel;
+	
+	private ActionBar actionBar;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,29 +61,57 @@ public class TravelActivity extends Activity {
 		        }
 			}
     	}
+    	
+    	initActionBar();
     }
     
+    /**
+     * Inicializa la action bar.
+     */
+    private void initActionBar() {
+    	actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setBackgroundDrawable(
+        	getResources().getDrawable(R.drawable.action_bar_shape));
+        
+	}
+    
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	// Handle presses on the action bar items
+        switch (item.getItemId()) {
+	        case android.R.id.home:
+	        	Intent intent = new Intent(this,TravelListActivity.class);
+	        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        	startActivity(intent);
+	        	return true;
+	        case R.id.menu_share_travel:
+	        	shareTravel();
+	        	return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    private void shareTravel() {
+    	String text =
+    			getString(R.string.lbl_new_visit) + ": "
+    			+ travel.getCity() + " (" 
+    			+ travel.getCountry() + "), " 
+    			+ getString(R.string.year_hint) + " " 
+    			+ travel.getYear();
+        	
+        	Intent intent = new Intent(Intent.ACTION_SEND);
+        	intent.putExtra(Intent.EXTRA_TEXT, text);
+        	intent.setType("text/plain");
+    		startActivity(Intent.createChooser(intent, getString(R.string.menu_share_travel)));
+		
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_travel, menu);
         return true;
     }
-    
-    @Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		
-    	String text =
-			getString(R.string.lbl_new_visit) + ": "
-			+ travel.getCity() + " (" 
-			+ travel.getCountry() + "), " 
-			+ getString(R.string.year_hint) + " " 
-			+ travel.getYear();
-    	
-    	Intent intent = new Intent(Intent.ACTION_SEND);
-    	intent.putExtra(Intent.EXTRA_TEXT, text);
-    	intent.setType("text/plain");
-		startActivity(Intent.createChooser(intent, getString(R.string.menu_share_travel)));
-		
-		return super.onMenuItemSelected(featureId, item);
-	}
 }
