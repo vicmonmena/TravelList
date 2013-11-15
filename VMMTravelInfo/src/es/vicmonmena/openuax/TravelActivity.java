@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -19,6 +20,11 @@ import es.vicmonmena.openuax.model.TravelInfo;
  *
  */
 public class TravelActivity extends Activity {
+	
+	/**
+	 * TAG for log messages.
+	 */
+	private String TAG = TravelActivity.class.getName();
 	
 	private TravelInfo travel;
 	
@@ -72,6 +78,7 @@ public class TravelActivity extends Activity {
     	actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setBackgroundDrawable(
         	getResources().getDrawable(R.drawable.action_bar_shape));
         
@@ -95,6 +102,7 @@ public class TravelActivity extends Activity {
     }
     
     private void shareTravel() {
+    	Log.i(TAG, "Sharing travel...");
     	String text =
     			getString(R.string.lbl_new_visit) + ": "
     			+ travel.getCity() + " (" 

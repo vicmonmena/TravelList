@@ -1,5 +1,6 @@
 package es.vicmonmena.openuax;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,6 +32,8 @@ public class EditTravelActivity extends Activity {
 	private String TAG = EditTravelActivity.class.getName();
 	
 	private TravelInfo travel;
+	
+	private ActionBar actionBar;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,38 +72,65 @@ public class EditTravelActivity extends Activity {
 			// Es creación => instanciamos el objeto vacío
 			travel = new TravelInfo();
 		}
-	}
-	/**
-	 * Called when click on view parameter.
-	 * @param view - view clicked
-	 */
-	public void onClickView(View view) {
 		
-		if (view.getId() == R.id.save_travel) {
-			
-			if (TextUtils.isEmpty(((EditText) findViewById(R.id.countryField)).getText())) {
-				Toast.makeText(this, getString(R.string.country_validation_msg), Toast.LENGTH_SHORT).show();
-			} else if (TextUtils.isEmpty(((EditText) findViewById(R.id.cityField)).getText())) {
-				Toast.makeText(this, getString(R.string.city_validation_msg), Toast.LENGTH_SHORT).show();
-			} else if (TextUtils.isEmpty(((EditText) findViewById(R.id.yearField)).getText())) {
-				Toast.makeText(this, getString(R.string.year_validation_msg), Toast.LENGTH_SHORT).show();
-			} else {
-				
-				Intent intent = new Intent();
-				
-				// Si es edición mantenemos el id
-				travel.setCountry(((EditText) findViewById(R.id.countryField)).getText().toString()); 
-				travel.setCity(((EditText) findViewById(R.id.cityField)).getText().toString());
-				travel.setYear(Integer.parseInt(((EditText) findViewById(R.id.yearField)).getText().toString()));
-				travel.setNote(((EditText) findViewById(R.id.noteField)).getText().toString());
-				
-				intent.putExtra(TravelInfo.EXTRA_TRAVEL, travel);
-				
-				setResult(RESULT_OK, intent);
-				finish();
-			}
-		}
+		initActionBar();
 	}
+	
+	/**
+     * Inicializa la action bar.
+     */
+    private void initActionBar() {
+    	actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setBackgroundDrawable(
+        	getResources().getDrawable(R.drawable.action_bar_shape));
+        
+	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_travel_edit, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	// Handle presses on the action bar items
+        switch (item.getItemId()) {
+	        case android.R.id.home:
+	        	Intent intent = new Intent(this,TravelListActivity.class);
+	        	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        	startActivity(intent);
+	        	return true;
+	        case R.id.menu_option_save:
+	        	if (TextUtils.isEmpty(((EditText) findViewById(R.id.countryField)).getText())) {
+					Toast.makeText(this, getString(R.string.country_validation_msg), Toast.LENGTH_SHORT).show();
+				} else if (TextUtils.isEmpty(((EditText) findViewById(R.id.cityField)).getText())) {
+					Toast.makeText(this, getString(R.string.city_validation_msg), Toast.LENGTH_SHORT).show();
+				} else if (TextUtils.isEmpty(((EditText) findViewById(R.id.yearField)).getText())) {
+					Toast.makeText(this, getString(R.string.year_validation_msg), Toast.LENGTH_SHORT).show();
+				} else {
+					
+					Intent iTravel = new Intent();
+					
+					// Si es edición mantenemos el id
+					travel.setCountry(((EditText) findViewById(R.id.countryField)).getText().toString()); 
+					travel.setCity(((EditText) findViewById(R.id.cityField)).getText().toString());
+					travel.setYear(Integer.parseInt(((EditText) findViewById(R.id.yearField)).getText().toString()));
+					travel.setNote(((EditText) findViewById(R.id.noteField)).getText().toString());
+					
+					iTravel.putExtra(TravelInfo.EXTRA_TRAVEL, travel);
+					
+					setResult(RESULT_OK, iTravel);
+					finish();
+				}
+	        	return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

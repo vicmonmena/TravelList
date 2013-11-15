@@ -14,7 +14,6 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +32,13 @@ import es.vicmonmena.openuax.view.ReportDialog;
  */
 public class TravelListActivity extends ListActivity {
 
+	/**
+	 * TAG for log messages.
+	 */
+	private String TAG = TravelListActivity.class.getName();
+	
 	static final int REQUEST_CODE_TRAVEL_CREATED = 10;
 	static final int REQUEST_CODE_TRAVEL_UPDATED = 20;
-	
-	static final int LEFT_TAB = 0;
-	static final int RIGHT_TAB = 1;
 	
 	private TravelCursorAdapter adapter;
 	
@@ -111,6 +112,7 @@ public class TravelListActivity extends ListActivity {
     	actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setBackgroundDrawable(
         	getResources().getDrawable(R.drawable.action_bar_shape));
         
@@ -124,7 +126,7 @@ public class TravelListActivity extends ListActivity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	// Handle presses on the action bar items
+
         switch (item.getItemId()) {
 	        case android.R.id.home:
 				new AlertDialog.Builder(this)
@@ -207,7 +209,7 @@ public class TravelListActivity extends ListActivity {
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.setHeaderTitle(getString(R.string.ctx_menu_title));  
-		getMenuInflater().inflate(R.menu.activity_travellist, menu);
+		getMenuInflater().inflate(R.menu.activity_travel_list, menu);
 	}
 	
 	@Override

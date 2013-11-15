@@ -19,7 +19,6 @@
     <string name="note_hint">Anotaciones</string>
     
     <string name="lbl_new_visit">Nueva visita</string>
-    <string name="save_label">Guardar</string>
     
     <string name="country_validation_msg">Please! Introduce país</string>
     <string name="city_validation_msg">Please! Introduce ciudad</string>
@@ -32,6 +31,7 @@
     <string name="menu_new_travel">Nuevo viaje</string>
     <string name="menu_share_travel">Compartir</string>
     <string name="menu_report">Informar</string>
+    <string name="menu_option_save">Guardar</string>
     
     <string name="ctx_menu_title">¿Qué quieres?</string>
     <string name="ctx_menu_option_edit">Modificarlo</string>
