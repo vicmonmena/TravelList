@@ -41,7 +41,7 @@ public class TravelListActivity extends ListActivity {
 	
 	private TravelCursorAdapter adapter;
 	
-	ActionBar actionBar;
+	private ActionBar actionBar;
 	
 	final class TravelCursorAdapter extends ResourceCursorAdapter {
 
@@ -91,7 +91,7 @@ public class TravelListActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         initActionBar();
         
         ContentResolver cr = getContentResolver();
@@ -108,7 +108,6 @@ public class TravelListActivity extends ListActivity {
      * Inicializa la action bar.
      */
     private void initActionBar() {
-    	
     	actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
